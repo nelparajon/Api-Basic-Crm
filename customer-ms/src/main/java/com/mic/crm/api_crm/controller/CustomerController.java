@@ -61,6 +61,6 @@ public class CustomerController {
     @DeleteMapping("/{name}")
     public ResponseEntity<CustomerResponseApi> deleteCustomer(@PathVariable String name){
         customerService.deleteCustomer(name);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(new CustomerResponseApi("Cliente eliminado con éxito."));
+        return ResponseEntity.status(HttpStatus.OK).body(new CustomerResponseApi("Cliente eliminado con éxito."));
     }
 }

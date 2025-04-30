@@ -12,4 +12,5 @@ public interface ProductMapper {
     Product productDtoToProduct(ProductDto productDto);
     ProductDto productToProductDto(Product product);
     Product updateProduct(@MappingTarget Product product, ProductDto productDto);
+    String dtoValueAsString(ProductDto productDto);
 }

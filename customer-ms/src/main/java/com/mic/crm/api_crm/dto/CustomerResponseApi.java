@@ -10,6 +10,10 @@ public class CustomerResponseApi {
     private String message;
     private CustomerDto customerDto;
     private List<CustomerDto> customersList;
+
+    public CustomerResponseApi() {
+    }
+
     /**
      * Constructor to create an ApiResponse with a message and an UserDto.
      *

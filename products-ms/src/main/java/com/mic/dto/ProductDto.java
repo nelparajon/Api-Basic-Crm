@@ -11,6 +11,7 @@ import lombok.Data;
 @Builder
 public class ProductDto {
 
+    long id;
     @NotBlank(message = "Debes añadir un nombre al producto")
     private String title;
     @Size(max = 540)
@@ -25,6 +26,20 @@ public class ProductDto {
         this.title = title;
         this.description = description;
         this.price = price;
+    }
+    public ProductDto(Long id, String title, String description, Double price) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.price = price;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getTitle() {

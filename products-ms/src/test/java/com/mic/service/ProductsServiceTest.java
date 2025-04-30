@@ -1,4 +1,4 @@
-package service;
+package com.mic.service;
 
 import com.mic.SpringBootProductsMainApplication;
 import com.mic.dto.ProductDto;

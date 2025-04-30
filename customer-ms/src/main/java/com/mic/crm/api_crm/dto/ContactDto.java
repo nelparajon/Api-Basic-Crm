@@ -3,8 +3,17 @@ package com.mic.crm.api_crm.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.mic.crm.api_crm.model.Customer;
 import jakarta.validation.constraints.Email;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
 
+import java.util.List;
+
+@Builder
+@Data
+@AllArgsConstructor
 public class ContactDto {
+    long id;
     private String contactFirstName;
     private String contactSecondName;
     @Email(message = "El formato del email no es válido")
@@ -12,11 +21,12 @@ public class ContactDto {
     private String phone;
     private String departamento;
     private String cargo;
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private long customerId;
+    List<ContactDto> contacts;
 
     public ContactDto() {
     }
+
 
     public ContactDto(String contactFirstName, String contactSecondName, String email, String phone, String departamento, String cargo, long customerId) {
         this.contactFirstName = contactFirstName;
@@ -26,6 +36,14 @@ public class ContactDto {
         this.departamento = departamento;
         this.cargo = cargo;
         this.customerId = customerId;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getContactFirstName() {

@@ -17,8 +17,8 @@ public interface ContactMapper {
     @Mapping(target = "customer", ignore = true) //evita recursión
     Contact contactDtoToContact(ContactDto contactDto);
 
-    @Mapping(target = "customer", ignore = true)
-    void updateContactFromDto(ContactDto dto, @MappingTarget Contact entity);
+    @Mapping(target = "id", ignore = true)
+    Contact updateContactFromDto(ContactDto dto, @MappingTarget Contact entity);
 }
 
 

@@ -2,6 +2,9 @@ package com.mic.crm.api_crm.service;
 
 import com.mic.crm.api_crm.dto.ContactDto;
 import com.mic.crm.api_crm.dto.CustomerDto;
+import com.mic.crm.api_crm.exception.ContactNotFoundException;
+import com.mic.crm.api_crm.exception.CustomerNotFoundException;
+import com.mic.crm.api_crm.exception.InvalidContactDataException;
 import com.mic.crm.api_crm.model.Contact;
 import com.mic.crm.api_crm.model.Customer;
 import com.mic.crm.api_crm.repository.ContactRepository;
@@ -9,6 +12,7 @@ import com.mic.crm.api_crm.utils.ContactMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -46,23 +50,38 @@ public class ContactService {
     public Contact getContactById(long id){
 
         if(id <= 0){
-            throw new IllegalArgumentException("El id debe ser un numero positivo");
+            throw new InvalidContactDataException("El id debe ser un numero positivo");
         }
 
        return contactRepository.findById(id)
-                .orElseThrow( () -> new RuntimeException("Contacto no encontrado con id: " + id));
+                .orElseThrow( () -> new ContactNotFoundException("Contacto no encontrado con id: " + id));
 
     }
 
-    public ContactDto updateContact(Long contactId, ContactDto contactDto) {
-        Contact existingContact = getContactById(contactId);
+    public List<ContactDto> getContacts(){
+        return contactRepository.findAll()
+                .stream()
+                .map(contactMapper::contactToContactDto)
+                .toList();
+    }
 
-        //Mapear el DTO a la entidad existente
-        contactMapper.updateContactFromDto(contactDto, existingContact);
+    public ContactDto updateContact(long id, ContactDto contactDto) {
+        Contact existingContact = contactRepository.findById(id)
+                .orElseThrow(() -> new ContactNotFoundException("No existe un contacto con ese id"));
+        System.out.println("EXISTING CONTACT ID: " + existingContact.getId());
+        System.out.println("ID DEL PATH: " + id);
 
-        contactRepository.save(existingContact);
+        // Actualizar datos del contacto
+        Contact updatedContact = contactMapper.updateContactFromDto(contactDto, existingContact);
 
-        //Convertir de nuevo la entidad a DTO para exponerla
-        return contactMapper.contactToContactDto(existingContact);
+        System.out.println("ID DEL UPDATE CONTACT: " + updatedContact.getId());
+
+        // Asignar el Customer correspondiente
+        Customer associatedCustomer = customerService.findCustomerEntityById(existingContact.getCustomer().getId());
+        updatedContact.setCustomer(associatedCustomer);
+
+        contactRepository.save(updatedContact);
+
+        return contactMapper.contactToContactDto(updatedContact);
     }
 }

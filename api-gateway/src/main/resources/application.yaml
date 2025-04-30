@@ -1,0 +1,50 @@
+spring:
+  application:
+    name: api-gateway
+
+  main:
+    web-application-type: reactive
+
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      routes:
+        - id: customers-service
+          uri: lb://CUSTOMERS-SERVICE
+          predicates:
+            - Path=/contacts/**
+            - Path=/customers/**
+
+        - id: products-service
+          uri: lb://PRODUCTS-SERVICE
+          predicates:
+            - Path=/products/**
+
+        - id: sales-service
+          uri: lb://SALES-SERVICE
+          predicates:
+            - Path=/sales/**
+
+        - id: users-service
+          uri: lb://USERS-SERVICE
+          predicates:
+            - Path=/users/**
+            - Path=/users-service/auth/**
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+
+  instance:
+    instance-id: ${spring.application.name}:${random.uuid}
+
+server:
+  port: 8080
+
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG

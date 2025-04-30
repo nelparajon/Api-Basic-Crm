@@ -2,6 +2,8 @@ package com.mic.crm.api_crm.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
@@ -10,6 +12,8 @@ import org.hibernate.annotations.SourceType;
 import java.time.OffsetDateTime;
 import java.util.List;
 
+@Builder
+@AllArgsConstructor
 @Entity
 @Table(name = "customers")
 public class Customer {

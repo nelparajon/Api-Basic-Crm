@@ -1,13 +1,14 @@
 package com.mic.crm.api_crm.dto;
 
 import com.mic.crm.api_crm.model.Contact;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.OffsetDateTime;
 import java.util.List;
 
-
+@Builder
 public class CustomerDto {
     private long id;
     private String name;

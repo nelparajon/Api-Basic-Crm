@@ -1,6 +1,7 @@
 package com.mic.crm.api_crm.service;
 
 import com.mic.crm.api_crm.dto.CustomerDto;
+import com.mic.crm.api_crm.exception.ContactNotFoundException;
 import com.mic.crm.api_crm.exception.CustomerNotFoundException;
 import com.mic.crm.api_crm.exception.InvalidCustomerDataException;
 import com.mic.crm.api_crm.model.Customer;
@@ -50,6 +51,11 @@ public class CustomerService {
                 .orElseThrow(() -> new CustomerNotFoundException("Cliente no encontrado con ID: " + id, HttpStatus.NOT_FOUND));
 
         return customerMapper.customerToCustomerDto(customer);
+    }
+
+    public Optional<Customer> findCustomerById(long id){
+       return Optional.ofNullable(customerRepository.findById(id)
+               .orElseThrow(() -> new ContactNotFoundException("Contacto no encontrado con ese id")));
     }
 
     public Customer findCustomerEntityById(long id) {
