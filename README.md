@@ -10,7 +10,7 @@ Consta de 6 microservicios:
 - **Api-Gateway**
 - **Discovery Service**
 
-Incluye autenticación **JWT** con **Spring Security** en el microservicio **Users**. La **Api Gateway** actúa como punto de acceso a cada microservicio y el servicio de descubrimiento se gestiona con **Eureka Server**.
+Incluye autenticación **JWT** con **Spring Security** en el microservicio **Users**. La **Api Gateway** actúa como punto de acceso a cada microservicio y el servicio de descubrimiento se gestiona con **Eureka Server**. También se ha implementado **paginación** con **Pageable** de Spring donde puede ser más necesario, en este caso al mostrar las **opportunidades de venta** o los **clientes**.
 
 # Tecnologías Usadas
 
