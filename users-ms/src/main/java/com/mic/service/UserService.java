@@ -57,15 +57,6 @@ public class UserService {
                 .toList();
     }
 
-    /*public List<UserResponseDto> findByFullName(String name, String lastName) {
-        return Optional.of(userRepository.findByFirstnameAndLastnameContainingIgnoreCase(name, lastName))
-                .filter(list -> !list.isEmpty())
-                .orElseThrow(() -> new UserNotFoundException("No se encontró ningún usuario con ese nombre"))
-                .stream()
-                .map(userMapper::toDTO)
-                .toList();
-    }*/
-
     public List<UserResponseDto> findByEmail(String email) {
         return Optional.of(userRepository.findByEmailContainingIgnoreCase(email))
                 .filter(list -> !list.isEmpty())

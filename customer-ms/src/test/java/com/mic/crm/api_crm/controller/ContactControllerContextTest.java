@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.time.OffsetDateTime;
 import java.util.Collections;
@@ -20,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@ActiveProfiles("test")
 public class ContactControllerContextTest {
     @Autowired
     private TestRestTemplate testRestTemplate;
@@ -71,20 +73,20 @@ public class ContactControllerContextTest {
     void updateContact() {
         // Crear un cliente para asociarlo al contacto
         Customer customer = Customer.builder()
-                        .name("Camara Comercio").build();
+                .name("Camara Comercio").build();
         customerRepository.save(customer);
 
         // Crear un contacto con el customerId
         String jsonBody = """
-                {
-                    "contactFirstName": "Pedro",
-                    "contactSecondName": "Díaz",
-                    "email": "pd@exampl.es",
-                    "phone": "1234567",
-                    "cargo": "Director",
-                    "customerId": 1
-                }
-                """;
+            {
+                "contactFirstName": "Pedro",
+                "contactSecondName": "Díaz",
+                "email": "pd@exampl.es",
+                "phone": "1234567",
+                "cargo": "Director",
+                "customerId": 1
+            }
+            """;
         ResponseEntity<ContactResponseApi> createResponse = testRestTemplate.exchange(
                 "/contacts/create",
                 HttpMethod.POST,
@@ -99,13 +101,22 @@ public class ContactControllerContextTest {
         long contactId = createResponse.getBody().getContactDto().getId();
 
         // Crear el DTO actualizado para el contacto
-        ContactDto updateContactDto = new ContactDto("Pedro", "Díaz", "pedro@ejemplo.com", "987654", "IT", "Manager", customer.getId());
+        String updateJsonBody = """
+            {
+                "contactFirstName": "Pedro",
+                "contactSecondName": "Díaz",
+                "email": "pedro@ejemplo.com",
+                "phone": "987654",
+                "cargo": "IT",
+                "customerId": 1
+            }
+            """;
 
         // Llamar al endpoint PUT para actualizar el contacto
         ResponseEntity<ContactResponseApi> updateResponse = testRestTemplate.exchange(
                 "/contacts/{contactId}",
                 HttpMethod.PUT,
-                createEntity(updateContactDto.toString()),
+                createEntity(updateJsonBody),
                 ContactResponseApi.class,
                 contactId
         );
@@ -124,5 +135,6 @@ public class ContactControllerContextTest {
         assertEquals("Díaz", updatedContact.getContactSecondName());
         assertEquals("pedro@ejemplo.com", updatedContact.getEmail());
     }
+
 }
 

@@ -1,8 +1,10 @@
 package com.mic.crm.api_crm.service;
 
+import com.mic.crm.api_crm.dto.ContactDto;
 import com.mic.crm.api_crm.dto.CustomerDto;
 import com.mic.crm.api_crm.exception.CustomerNotFoundException;
 import com.mic.crm.api_crm.exception.InvalidCustomerDataException;
+import com.mic.crm.api_crm.model.Contact;
 import com.mic.crm.api_crm.model.Customer;
 import com.mic.crm.api_crm.repository.CustomerRepository;
 import com.mic.crm.api_crm.utils.CustomerMapper;
@@ -12,6 +14,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 
 import java.time.OffsetDateTime;
 import java.util.Collections;
@@ -22,6 +27,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
 
 @ExtendWith(MockitoExtension.class)
 class CustomerServiceTest {
@@ -123,12 +129,23 @@ class CustomerServiceTest {
     }
 
     @Test
-    void getCustomers_returnsList() {
-        when(customerRepository.findAllCustomersWithContacts()).thenReturn(List.of(customer));
+    void getCustomers_returnsPageableList() {
+        Customer customer = new Customer(1L, "COAA", OffsetDateTime.now(), List.of(new Contact()));
+        CustomerDto customerDto = new CustomerDto(1L, "COAA", OffsetDateTime.now(), List.of(new ContactDto()));
+
+        // Crear un Page con la paginación simulada
+        Page<Customer> customerPage = new PageImpl<>(List.of(customer), PageRequest.of(0, 10), 1);
+        when(customerRepository.findAllCustomersWithContacts(PageRequest.of(0, 10))).thenReturn(customerPage);
         when(customerMapper.customerToCustomerDto(customer)).thenReturn(customerDto);
 
-        List<CustomerDto> result = customerService.getCustomers();
-        assertEquals(1, result.size());
+        // Act
+        Page<CustomerDto> result = customerService.getCustomers(PageRequest.of(0, 10));
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(1, result.getTotalElements());  // Verifica que haya 1 elemento en la página
+        assertEquals(1, result.getContent().size());  // Verifica que haya 1 cliente en la página
+        assertEquals("COAA", result.getContent().get(0).getName());  // Verifica que el nombre sea el correcto
     }
 
     @Test

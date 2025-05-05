@@ -1,6 +1,8 @@
 package com.mic.crm.api_crm.repository;
 
 import com.mic.crm.api_crm.model.Customer;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -17,8 +19,6 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
     @Query("SELECT c.id FROM Customer c WHERE c.name = :name")
     Optional<Long> findIdByName(@Param("name") String name);
     @Query("SELECT c FROM Customer c LEFT JOIN FETCH c.contactos ORDER BY c.id ASC")
-    List<Customer> findAllCustomersWithContacts();
-
-
+    Page<Customer> findAllCustomersWithContacts(Pageable pageable);
 
 }

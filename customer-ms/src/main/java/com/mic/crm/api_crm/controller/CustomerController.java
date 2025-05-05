@@ -4,6 +4,9 @@ import com.mic.crm.api_crm.dto.CustomerDto;
 import com.mic.crm.api_crm.dto.CustomerResponseApi;
 import com.mic.crm.api_crm.service.CustomerService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,8 +32,8 @@ public class CustomerController {
 
     //Endpoint: obtener todos los clientes
     @GetMapping
-    public ResponseEntity<CustomerResponseApi> getCustomers(){
-        List<CustomerDto> customers = customerService.getCustomers();
+    public ResponseEntity<CustomerResponseApi> getCustomers(@PageableDefault(sort = "name")Pageable pageable){
+        Page<CustomerDto> customers = customerService.getCustomers(pageable);
         return customers.isEmpty()
                 ? ResponseEntity.status(HttpStatus.OK).body(new CustomerResponseApi("No se encontraron clientes", customers))
                 : ResponseEntity.status(HttpStatus.OK).body(new CustomerResponseApi("Clientes encontrados: ", customers));
@@ -39,8 +42,8 @@ public class CustomerController {
     // Endpoint: obtener un cliente por ID
     @GetMapping("/{id}")
     public ResponseEntity<CustomerResponseApi> getCustomerById(@PathVariable long id){
-        CustomerDto customer = customerService.getCustomerById(id);
-        return ResponseEntity.status(HttpStatus.OK).body(new CustomerResponseApi("Cliente encontrado con éxito", customer));
+        CustomerDto customerDto = customerService.getCustomerById(id);
+        return ResponseEntity.status(HttpStatus.OK).body(new CustomerResponseApi("Cliente encontrado con éxito", customerDto));
     }
 
     //Endpoint: obtener un cliente por nombre
@@ -58,7 +61,7 @@ public class CustomerController {
     }
 
     // Endpoint para eliminar un cliente por nombre
-    @DeleteMapping("/{name}")
+    @DeleteMapping("/delete-by-name/{name}")
     public ResponseEntity<CustomerResponseApi> deleteCustomer(@PathVariable String name){
         customerService.deleteCustomer(name);
         return ResponseEntity.status(HttpStatus.OK).body(new CustomerResponseApi("Cliente eliminado con éxito."));

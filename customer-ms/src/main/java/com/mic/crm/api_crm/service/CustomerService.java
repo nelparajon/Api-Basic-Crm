@@ -8,6 +8,8 @@ import com.mic.crm.api_crm.model.Customer;
 import com.mic.crm.api_crm.repository.CustomerRepository;
 import com.mic.crm.api_crm.utils.CustomerMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -59,7 +61,6 @@ public class CustomerService {
     }
 
     public Customer findCustomerEntityById(long id) {
-        System.out.println("Customer id:" + id);
         return customerRepository.findById(id)
                 .orElseThrow(() -> new CustomerNotFoundException("Cliente no encontrado con ID: " + id, HttpStatus.NOT_FOUND));
     }
@@ -82,11 +83,10 @@ public class CustomerService {
                 .orElseThrow(()-> new CustomerNotFoundException("Cliente no encontrado por ese nombre", HttpStatus.NOT_FOUND));
     }
 
-    public List<CustomerDto> getCustomers(){
-        return customerRepository.findAllCustomersWithContacts()
-                .stream()
-                .map(customerMapper::customerToCustomerDto)
-                .toList();
+    public Page<CustomerDto> getCustomers(Pageable pageable){
+        return customerRepository.findAllCustomersWithContacts(pageable)
+                .map(customerMapper::customerToCustomerDto);
+
     }
 
     public CustomerDto updateCustomer(long id, CustomerDto customerDto){

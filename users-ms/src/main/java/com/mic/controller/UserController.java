@@ -31,7 +31,7 @@ public class UserController {
     @PostMapping("/register")
     public ResponseEntity<ApiResponse<UserResponseDto>> createUser(@Valid @RequestBody UserRequestDto request) {
         UserResponseDto dto = userService.createUser(request);
-        ApiResponse<UserResponseDto> response = new ApiResponse<>("Usuario creado correctamente", dto);
+        ApiResponse<UserResponseDto> response = new ApiResponse<>("Usuario creado con éxito", dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
@@ -45,15 +45,6 @@ public class UserController {
 
         return ResponseEntity.ok(response);
     }
-
-    /*@GetMapping("searchByFullName/{fullName}")
-    public ResponseEntity<ApiResponse<List<UserResponseDto>>> getUsersByFullName(@PathVariable String fullName) {
-        String[] names = fullName.split("-");
-        String name = names[0];
-        String lastName = names[1];
-        List<UserResponseDto> users = userService.findByFullName(name, lastName);
-        return ResponseEntity.ok(new ApiResponse<>("Usuarios encontrados con ese nombre", users));
-    }*/
 
     @GetMapping("/searchByEmail")
     public ResponseEntity<ApiResponse<List<UserResponseDto>>> getUsersByEmail(@RequestParam String email) {

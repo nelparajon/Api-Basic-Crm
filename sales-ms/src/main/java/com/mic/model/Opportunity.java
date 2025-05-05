@@ -5,6 +5,8 @@ import com.mic.utils.OppPriority;
 import com.mic.utils.OppSource;
 import com.mic.utils.OppState;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
@@ -15,6 +17,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
+@AllArgsConstructor
+@Builder
 @Entity
 @Table(name = "opportunities")
 public class Opportunity {
@@ -160,11 +164,11 @@ public class Opportunity {
         this.updatedAt = updatedAt;
     }
 
-    public OffsetDateTime getEnd_date() {
+    public OffsetDateTime getEndDate() {
         return endDate;
     }
 
-    public void setEnd_date(OffsetDateTime end_date) {
+    public void setEndDate(OffsetDateTime end_date) {
         this.endDate = end_date;
     }
 

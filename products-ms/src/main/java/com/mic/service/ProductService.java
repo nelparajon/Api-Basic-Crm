@@ -47,9 +47,9 @@ public class ProductService {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new NotFoundProductException("No existe ningún producto con ese ID: " + id));
 
-        Product updatedProduct = productMapper.updateProduct(product, productDto);
-        productRepository.save(updatedProduct);
-        return productMapper.productToProductDto(updatedProduct);
+        productMapper.updateProduct(productDto, product);
+        productRepository.save(product);
+        return productMapper.productToProductDto(product);
     }
 
     public void deleteProduct(Long id){

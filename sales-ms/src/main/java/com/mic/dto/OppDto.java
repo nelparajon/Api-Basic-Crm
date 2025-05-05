@@ -5,12 +5,17 @@ import com.mic.utils.OppSource;
 import com.mic.utils.OppState;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SourceType;
 
 import java.time.OffsetDateTime;
 
+@AllArgsConstructor
+@Builder
 public class OppDto {
 
     private String publicId;

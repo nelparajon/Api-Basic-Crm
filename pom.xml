@@ -20,7 +20,8 @@
 		<module>products-ms</module>
 		<module>users-ms</module>
 		<module>discovery-service</module>
-        <module>api-gateway</module> <!-- Solo una entrada -->
+        <module>api-gateway</module>
+        <module>activity-log-service</module> <!-- Solo una entrada -->
 	</modules>
 	<properties>
 		<java.version>21</java.version>
@@ -78,6 +79,11 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<scope>test</scope> <!-- Solo para pruebas -->
 		</dependency>
 		<!-- Mapping Objects Dependency -->
 		<dependency>

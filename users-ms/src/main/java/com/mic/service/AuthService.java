@@ -25,14 +25,14 @@ public class AuthService {
     private AuthenticationManager authenticationManager;
     private UserMapper userMapper;
 
-    @Autowired
     private JwtService jwtService;
 
-    public AuthService(UserRepository userRepository, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, UserMapper userMapper) {
+    public AuthService(UserRepository userRepository, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, UserMapper userMapper, JwtService jwtService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
         this.userMapper = userMapper;
+        this.jwtService = jwtService;
     }
 
     public AuthResponse authentication(AuthRequest authRequest) {

@@ -1,10 +1,16 @@
 package com.mic.dto;
 
 import com.mic.utils.Role;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 
 import java.time.Instant;
 import java.time.OffsetDateTime;
 
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserResponseDto {
     private String publicId;
     private String firstName;

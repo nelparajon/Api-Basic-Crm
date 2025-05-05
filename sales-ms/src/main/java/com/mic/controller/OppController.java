@@ -5,6 +5,9 @@ import com.mic.dto.OppResponseApi;
 import com.mic.model.Opportunity;
 import com.mic.service.OppService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,8 +31,9 @@ public class OppController {
     }
 
     @GetMapping
-    public ResponseEntity<OppResponseApi> getAllOpportunities(){
-        List<OppDto> opps = oppService.getAllOpps();
+    public ResponseEntity<OppResponseApi> getAllOpportunities(@PageableDefault(sort = {"startDate, priority"} ) Pageable pageable){
+
+        Page<OppDto> opps = oppService.getAllOpps(pageable);
 
         return ResponseEntity.status(HttpStatus.OK).body(new OppResponseApi("Opportunities founded", opps));
     }

@@ -1,6 +1,7 @@
 package com.mic.dto;
 
 import com.mic.repository.OppRepository;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -9,7 +10,7 @@ public class OppResponseApi {
     private String message;
     private OppDto oppDto;
 
-    private List<OppDto> opps;
+    private Page<OppDto> opps;
 
     public OppResponseApi() {
     }
@@ -19,7 +20,7 @@ public class OppResponseApi {
         this.oppDto = oppDto;
     }
 
-    public OppResponseApi(String message, List<OppDto> opps){
+    public OppResponseApi(String message, Page<OppDto> opps){
         this.message = message;
         this.opps = opps;
 
@@ -45,11 +46,11 @@ public class OppResponseApi {
         this.oppDto = oppDto;
     }
 
-    public List<OppDto> getOpps() {
+    public Page<OppDto> getOpps() {
         return opps;
     }
 
-    public void setOpps(List<OppDto> opps) {
+    public void setOpps(Page<OppDto> opps) {
         this.opps = opps;
     }
 }

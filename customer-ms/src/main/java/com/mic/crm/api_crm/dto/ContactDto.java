@@ -22,7 +22,7 @@ public class ContactDto {
     private String departamento;
     private String cargo;
     private long customerId;
-    List<ContactDto> contacts;
+
 
     public ContactDto() {
     }

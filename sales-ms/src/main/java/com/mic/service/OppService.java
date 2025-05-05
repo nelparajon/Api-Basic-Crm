@@ -6,6 +6,8 @@ import com.mic.model.Opportunity;
 import com.mic.repository.OppRepository;
 import com.mic.utils.OppMapper;
 import com.mic.utils.OppPriority;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -37,10 +39,9 @@ public class OppService {
 
     }
 
-    public List<OppDto> getAllOpps(){
-        return oppRepository.findAll().stream()
-                .map(oppMapper::oppToOppDto)
-                .toList();
+    public Page<OppDto> getAllOpps(Pageable pageable){
+        return oppRepository.findAll(pageable)
+                .map(oppMapper::oppToOppDto);
     }
 
     public OppDto updateOpp(String publicId, OppDto oppDto){

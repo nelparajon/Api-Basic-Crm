@@ -8,6 +8,7 @@ import com.mic.model.Product;
 import com.mic.repository.ProductRepository;
 import com.mic.service.ProductService;
 import com.mic.utils.ProductMapper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -35,6 +36,8 @@ public class ProductsServiceTest {
 
     @InjectMocks
     private ProductService productService;
+
+
     @Test
     void testSaveProduct() {
         ProductDto productDto = new ProductDto("Producto", "Descripción", 100.0);
@@ -180,15 +183,21 @@ public class ProductsServiceTest {
                 .price(700.00).build();
 
         when(productRepository.findById(id)).thenReturn(Optional.of(productInBD));
-        when(productMapper.updateProduct(productInBD, productDtoInput)).thenReturn(updateProduct);
-        when(productMapper.productToProductDto(updateProduct)).thenReturn(productDtoOutput);
+        doAnswer(invocation -> {
+            ProductDto dto = invocation.getArgument(0);
+            Product entity = invocation.getArgument(1);
+            entity.setTitle(dto.getTitle());
+            entity.setDescription(dto.getDescription());
+            entity.setPrice(dto.getPrice());
+            return null;
+        }).when(productMapper).updateProduct(productDtoInput, productInBD);        when(productMapper.productToProductDto(updateProduct)).thenReturn(productDtoOutput);
 
         ProductDto pDto = productService.updateProduct(id, productDtoInput);
         assertEquals("Web Estática con 3 páginas diferentes: Inicio, servicios, contacto", pDto.getDescription());
 
         //Verificación de métodos
         verify(productRepository).findById(id);
-        verify(productMapper).updateProduct(productInBD, productDtoInput);
+        verify(productMapper).updateProduct(productDtoInput, productInBD);
         verify(productRepository).save(updateProduct);
         verify(productMapper).productToProductDto(updateProduct);
     }

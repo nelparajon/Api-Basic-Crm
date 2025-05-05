@@ -11,6 +11,6 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 public interface ProductMapper {
     Product productDtoToProduct(ProductDto productDto);
     ProductDto productToProductDto(Product product);
-    Product updateProduct(@MappingTarget Product product, ProductDto productDto);
+    void updateProduct( ProductDto productDto, @MappingTarget Product product);
     String dtoValueAsString(ProductDto productDto);
 }

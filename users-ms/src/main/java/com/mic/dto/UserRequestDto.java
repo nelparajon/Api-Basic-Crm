@@ -6,8 +6,14 @@ import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 import org.springframework.data.mongodb.core.index.Indexed;
 
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserRequestDto {
     @NotBlank(message = "First name is required")
     @Size(max = 30)
